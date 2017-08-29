@@ -147,7 +147,7 @@
                         var j = data[id[d]].text.indexOf(d);
                         if (j != 0) {
                             var text = data[id[d]].text;
-                            return 0 - text[j - 1].length*15 ;
+                            return 0 - text[j - 1].length*14 ;
                         }
                     }
                 })
@@ -166,7 +166,7 @@
                 .text(function (d) {
                     return d;
                 })
-				.attr("font-size", "15px")
+				.attr("font-size", "14px")
                 .attr("fill", "white")
 				.attr("text-anchor", "middle")
                 .transition()
