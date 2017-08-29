@@ -37,7 +37,7 @@
     var delayTime = 600;
     var width = 900,
         height = 300,
-        cellSize = 150;
+        cellSize = 200;
 
     d3.csv("flowchart_3.csv", function (error, data) {
         if (error) return console.error(error);
@@ -93,13 +93,14 @@
                         // })
                      .attr("fill", function(d){if (d.ID<=9 || d.ID==27 ) {return "lightblue";}
 					 else {return "#548B54";}})
-
+                      
                 ;
-        var dx = 20, dy = 20;
+        var dx = 17, dy = 17;
 
         var text1 = svg.append("g")
                 .attr("fill", "white")
-                .attr("font-size", "10px")
+                .attr("font-size", "11px")
+				.attr("text-anchor", "middle")
                 .selectAll("text")
                 .data(data)
                 .enter()
@@ -117,6 +118,11 @@
                 })
                 .attr("dx", dx)
                 .attr("dy", dy)
+				.text(function (d) {
+                    if (d.cycle == "Y") {
+                        return d.text;
+                    }
+                })
                ;
 		var sequence = {};
         var id = {};
@@ -126,48 +132,7 @@
                 id[text] = item.ID - 1;
             })
         });		
-				
-            text1.selectAll("tspan")
-                .data(function (d, i) {
-                    if (data[i].cycle == "Y")
-                        return data[i].text;
-                    else return "";
-                })
-                .enter()
-                .append("tspan")
-                .attr("dx", function (d, i) {
-                    if (data[id[d]].text.length != 1) {
-                        var j = data[id[d]].text.indexOf(d);
-                        if (j != 0) {
-                            var text = data[id[d]].text;
-                            return 0 - text[j - 1].length * 12;
-                        }
-                    }
-                })
-                .attr("textLength", function (d, i) {
-                    return d.length * 12;
-                })
-                .attr("dy", function (d) {
-                    var j = data[id[d]].text.indexOf(d);
-                    console.log(d, data[id[d]].text, j);
-                    if (j == 0) {
-                        return 0 ;
-                    } else {
-                        return 14;
-                    }
-                })
-                .text(function (d) {
-                    return d;
-                })
-				.attr("font-size", "14px")
-                .attr("fill", "white")
-				.attr("text-anchor", "middle")
-                .transition()
-				.duration(300)
-                .delay(function (d) {
-                    return delayTime * data[id[d]].sequence;
-                })
-                ;
+			
 
 				
 				
