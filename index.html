@@ -37,7 +37,7 @@
     var delayTime = 600;
     var width = 900,
         height = 300,
-        cellSize = 170;
+        cellSize = 150;
 
     d3.csv("flowchart_3.csv", function (error, data) {
         if (error) return console.error(error);
@@ -91,7 +91,7 @@
                         })
                         // .delay(function(d) {return 300*d.sequence;
                         // })
-                     .attr("fill", function(d){if (d.ID<=9 || d.ID==27 ) {return "stellblue";}
+                     .attr("fill", function(d){if (d.ID<=9 || d.ID==27 ) {return "lightblue";}
 					 else {return "#548B54";}})
                       
                 ;
@@ -118,11 +118,11 @@
                 })
                 .attr("dx", dx)
                 .attr("dy", dy)
-				.text(function (d) {
-                    if (d.cycle == "Y") {
-                        return d.text;
-                    }
-                })
+				//.text(function (d) {
+                //    if (d.cycle == "Y") {
+                 //       return d.text;
+                 //   }
+                //})
                ;
 		var sequence = {};
         var id = {};
@@ -133,7 +133,48 @@
             })
         });		
 			
-
+	
+            text1.selectAll("tspan")
+                .data(function (d, i) {
+                    if (data[i].cycle == "Y")
+                        return data[i].text;
+                    else return "";
+                })
+                .enter()
+                .append("tspan")
+                .attr("dx", function (d, i) {
+                    if (data[id[d]].text.length != 1) {
+                        var j = data[id[d]].text.indexOf(d);
+                        if (j != 0) {
+                            var text = data[id[d]].text;
+                            return 0 - text[j - 1].length*15 ;
+                        }
+                    }
+                })
+                .attr("textLength", function (d, i) {
+                    return d.length * 12;
+                })
+                .attr("dy", function (d) {
+                    var j = data[id[d]].text.indexOf(d);
+                    console.log(d, data[id[d]].text, j);
+                    if (j == 0) {
+                        return 0 ;
+                    } else {
+                        return 14;
+                    }
+                })
+                .text(function (d) {
+                    return d;
+                })
+				.attr("font-size", "15px")
+                .attr("fill", "white")
+				.attr("text-anchor", "middle")
+                .transition()
+				.duration(300)
+                .delay(function (d) {
+                    return delayTime * data[id[d]].sequence;
+                })
+                ;
 				
 				
 				
